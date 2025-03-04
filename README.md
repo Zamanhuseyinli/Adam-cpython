@@ -13,7 +13,10 @@ In my **Adamlibrary** project, developed to bring low-level operations in basic 
 - ✅ Data structure management
 
 Support for DOS-based systems will be available in future versions.
-
+## Python-pip used
+```bash
+pip install adamlibrary==1.5
+```
 ## Dependencies
 - GCC
 - ctypes
