@@ -23,7 +23,7 @@ pip install adamlibrary==1.5
 - util-linux
 - Win32 system architecture libraries
 
-[Our GitHub page](https://github.com/Zamanhuseyinli/Adam-cpython)
+
 
 ## Community Site
 Visit our community site: [azccriminal.github.io](https://azccriminal.github.io)
