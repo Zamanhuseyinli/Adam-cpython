@@ -1,4 +1,0 @@
-cython
-setuptools
-wheel
-auditwheel
