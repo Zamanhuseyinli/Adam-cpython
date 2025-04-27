@@ -27,7 +27,6 @@ if platform.system() == 'Windows':
         'src/Win32/memreplication_cutline.cpp',
         'src/Win32/math.cpp'
     ]
-  
 
 # Extension'lar (C uzantıları)
 extensions = [
@@ -36,40 +35,30 @@ extensions = [
         sources=[sources[0]],
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
-        include_dirs=include_dirs,
-        library_dirs=library_dirs,
     ),
     Extension(
         'adamlibrary.datasetname',
         sources=[sources[1]],
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
-        include_dirs=include_dirs,
-        library_dirs=library_dirs,
     ),
     Extension(
         'adamlibrary.stringer',
         sources=[sources[2]],
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
-        include_dirs=include_dirs,
-        library_dirs=library_dirs,
     ),
     Extension(
         'adamlibrary.memreplication_cutline',
         sources=[sources[3]],
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
-        include_dirs=include_dirs,
-        library_dirs=library_dirs,
     ),
     Extension(
         'adamlibrary.math',
         sources=[sources[4]],
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
-        include_dirs=include_dirs,
-        library_dirs=library_dirs,
     ),
 ]
 
