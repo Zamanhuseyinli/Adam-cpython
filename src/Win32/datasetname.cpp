@@ -6,51 +6,71 @@
 
 // `memset` function
 static PyObject* py_memset(PyObject* self, PyObject* args) {
-    void *ptr;
+    PyObject *buffer_obj;
     int value;
-    int size;
+    Py_ssize_t size;
 
-    if (!PyArg_ParseTuple(args, "sii", &ptr, &value, &size)) {
+    if (!PyArg_ParseTuple(args, "Oin", &buffer_obj, &value, &size)) {
         return NULL;
     }
-    
-    memset(ptr, value, size);
+
+    char *buffer = PyByteArray_AsString(buffer_obj);
+    if (!buffer) {
+        PyErr_SetString(PyExc_TypeError, "Expected a bytearray object.");
+        return NULL;
+    }
+
+    memset(buffer, value, size);
     Py_RETURN_NONE;
 }
 
 // `memcmp` function
 static PyObject* py_memcmp(PyObject* self, PyObject* args) {
-    const char *ptr1, *ptr2;
+    Py_buffer buf1, buf2;
     int n;
 
-    if (!PyArg_ParseTuple(args, "ssi", &ptr1, &ptr2, &n)) {
+    if (!PyArg_ParseTuple(args, "y*y*i", &buf1, &buf2, &n)) {
         return NULL;
     }
 
-    int result = memcmp(ptr1, ptr2, n);
+    int result = memcmp(buf1.buf, buf2.buf, n);
+
+    PyBuffer_Release(&buf1);
+    PyBuffer_Release(&buf2);
+
     return Py_BuildValue("i", result);
 }
 
 // `strncpy` function
 static PyObject* py_strncpy(PyObject* self, PyObject* args) {
-    char *dest;
+    char dest[1024];
     const char *src;
     int num;
 
-    if (!PyArg_ParseTuple(args, "ssi", &dest, &src, &num)) {
+    if (!PyArg_ParseTuple(args, "si", &src, &num)) {
         return NULL;
     }
 
     strncpy(dest, src, num);
+    dest[num] = '\0';  // Sonlandırıcı ekle
+
     return Py_BuildValue("s", dest);
 }
 
 // `memmove` function
 static PyObject* py_memmove(PyObject* self, PyObject* args) {
-    void *dest, *src;
-    int size;
+    PyObject *dest_obj, *src_obj;
+    Py_ssize_t size;
 
-    if (!PyArg_ParseTuple(args, "ssi", &dest, &src, &size)) {
+    if (!PyArg_ParseTuple(args, "OOn", &dest_obj, &src_obj, &size)) {
+        return NULL;
+    }
+
+    char *dest = PyByteArray_AsString(dest_obj);
+    char *src = PyByteArray_AsString(src_obj);
+
+    if (!dest || !src) {
+        PyErr_SetString(PyExc_TypeError, "Expected bytearray objects.");
         return NULL;
     }
 
@@ -74,13 +94,20 @@ static PyObject* py_itoa(PyObject* self, PyObject* args) {
 // `sprintf` function
 static PyObject* py_sprintf(PyObject* self, PyObject* args) {
     const char *format;
+    PyObject *args_tuple;
     char buffer[1024];
 
-    if (!PyArg_ParseTuple(args, "s", &format)) {
+    if (!PyArg_ParseTuple(args, "sO", &format, &args_tuple)) {
         return NULL;
     }
 
-    snprintf(buffer, sizeof(buffer), format);
+    if (!PyTuple_Check(args_tuple)) {
+        PyErr_SetString(PyExc_TypeError, "Second argument must be a tuple.");
+        return NULL;
+    }
+
+    // Şu anda desteklemiyor, sadece formatı döndür
+    snprintf(buffer, sizeof(buffer), "%s", format);
     return Py_BuildValue("s", buffer);
 }
 
@@ -95,7 +122,7 @@ static PyObject* py_strchr(PyObject* self, PyObject* args) {
 
     const char *result = strchr(str, c);
     if (result) {
-        return Py_BuildValue("s", result);
+        return PyUnicode_FromString(result);
     } else {
         Py_RETURN_NONE;
     }
@@ -112,7 +139,7 @@ static PyObject* py_strrchr(PyObject* self, PyObject* args) {
 
     const char *result = strrchr(str, c);
     if (result) {
-        return Py_BuildValue("s", result);
+        return PyUnicode_FromString(result);
     } else {
         Py_RETURN_NONE;
     }
@@ -138,10 +165,10 @@ static PyObject* py_abs(PyObject* self, PyObject* args) {
         return NULL;
     }
 
-    return Py_BuildValue("i", abs(value));
+    return PyLong_FromLong(abs(value));
 }
 
-// `gcd` function (Greatest Common Divisor)
+// `gcd` function
 static int gcd(int a, int b) {
     while (b != 0) {
         int temp = b;
@@ -162,7 +189,7 @@ static PyObject* py_gcd(PyObject* self, PyObject* args) {
     return Py_BuildValue("i", result);
 }
 
-// Windows API Usage - Example Function: MessageBox Display
+// MessageBoxA kullanımı
 static PyObject* py_message_box(PyObject* self, PyObject* args) {
     const char *message;
     const char *title;
@@ -175,32 +202,33 @@ static PyObject* py_message_box(PyObject* self, PyObject* args) {
     Py_RETURN_NONE;
 }
 
-// Python Module Definition
+// Python Module Method Definitions
 static PyMethodDef AdamLibraryMethods[] = {
-    {"memset", py_memset, METH_VARARGS, "Allocate memory with memset"},
-    {"memcmp", py_memcmp, METH_VARARGS, "Memory comparison"},
-    {"strncpy", py_strncpy, METH_VARARGS, "Copy string with strncpy"},
-    {"memmove", py_memmove, METH_VARARGS, "Memory move"},
+    {"memset", py_memset, METH_VARARGS, "Fill memory with a constant byte"},
+    {"memcmp", py_memcmp, METH_VARARGS, "Compare memory areas"},
+    {"strncpy", py_strncpy, METH_VARARGS, "Copy string with specified limit"},
+    {"memmove", py_memmove, METH_VARARGS, "Move memory areas"},
     {"itoa", py_itoa, METH_VARARGS, "Convert integer to string"},
-    {"sprintf", py_sprintf, METH_VARARGS, "Formatted string output"},
-    {"strchr", py_strchr, METH_VARARGS, "Find character in string"},
-    {"strrchr", py_strrchr, METH_VARARGS, "Find last occurrence of character in string"},
+    {"sprintf", py_sprintf, METH_VARARGS, "Format a string"},
+    {"strchr", py_strchr, METH_VARARGS, "Locate first occurrence of character in string"},
+    {"strrchr", py_strrchr, METH_VARARGS, "Locate last occurrence of character in string"},
     {"atoi", py_atoi, METH_VARARGS, "Convert string to integer"},
-    {"abs", py_abs, METH_VARARGS, "Get absolute value"},
-    {"gcd", py_gcd, METH_VARARGS, "Compute greatest common divisor"},
+    {"abs", py_abs, METH_VARARGS, "Absolute value of integer"},
+    {"gcd", py_gcd, METH_VARARGS, "Greatest common divisor"},
     {"message_box", py_message_box, METH_VARARGS, "Show a message box"},
     {NULL, NULL, 0, NULL}
 };
 
-// Module Initialization
+// Module definition
 static struct PyModuleDef AdamLibraryModule = {
     PyModuleDef_HEAD_INIT,
     "datasetname",   // Module name
-    "Low-level C functions for memory and string operations", // Module description
+    "Low-level C functions for memory and string operations.", // Description
     -1,
     AdamLibraryMethods
 };
 
+// Initialization function
 PyMODINIT_FUNC PyInit_datasetname(void) {
     return PyModule_Create(&AdamLibraryModule);
 }
