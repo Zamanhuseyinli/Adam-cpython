@@ -6,7 +6,7 @@
 
 // `memset` function
 static PyObject* py_memset(PyObject* self, PyObject* args) {
-    Py_UNUSED(self);  // 'self' kullanılmıyor
+    Py_UNUSED(self);  // 'self' parametresi kullanılmıyor
 
     PyObject *buffer_obj;
     int value;
@@ -28,7 +28,7 @@ static PyObject* py_memset(PyObject* self, PyObject* args) {
 
 // `memcmp` function
 static PyObject* py_memcmp(PyObject* self, PyObject* args) {
-    Py_UNUSED(self);  // 'self' kullanılmıyor
+    Py_UNUSED(self);  // 'self' parametresi kullanılmıyor
 
     Py_buffer buf1, buf2;
     int n;
@@ -47,7 +47,7 @@ static PyObject* py_memcmp(PyObject* self, PyObject* args) {
 
 // `strncpy` function
 static PyObject* py_strncpy(PyObject* self, PyObject* args) {
-    Py_UNUSED(self);  // 'self' kullanılmıyor
+    Py_UNUSED(self);  // 'self' parametresi kullanılmıyor
 
     char dest[1024];
     const char *src;
@@ -65,7 +65,7 @@ static PyObject* py_strncpy(PyObject* self, PyObject* args) {
 
 // `memmove` function
 static PyObject* py_memmove(PyObject* self, PyObject* args) {
-    Py_UNUSED(self);  // 'self' kullanılmıyor
+    Py_UNUSED(self);  // 'self' parametresi kullanılmıyor
 
     PyObject *dest_obj, *src_obj;
     Py_ssize_t size;
@@ -88,7 +88,7 @@ static PyObject* py_memmove(PyObject* self, PyObject* args) {
 
 // `itoa` function
 static PyObject* py_itoa(PyObject* self, PyObject* args) {
-    Py_UNUSED(self);  // 'self' kullanılmıyor
+    Py_UNUSED(self);  // 'self' parametresi kullanılmıyor
 
     int value;
     char str[32];
@@ -103,7 +103,7 @@ static PyObject* py_itoa(PyObject* self, PyObject* args) {
 
 // `sprintf` function
 static PyObject* py_sprintf(PyObject* self, PyObject* args) {
-    Py_UNUSED(self);  // 'self' kullanılmıyor
+    Py_UNUSED(self);  // 'self' parametresi kullanılmıyor
 
     const char *format;
     PyObject *args_tuple;
@@ -125,7 +125,7 @@ static PyObject* py_sprintf(PyObject* self, PyObject* args) {
 
 // `strchr` function
 static PyObject* py_strchr(PyObject* self, PyObject* args) {
-    Py_UNUSED(self);  // 'self' kullanılmıyor
+    Py_UNUSED(self);  // 'self' parametresi kullanılmıyor
 
     const char *str;
     int c;
@@ -144,7 +144,7 @@ static PyObject* py_strchr(PyObject* self, PyObject* args) {
 
 // `strrchr` function
 static PyObject* py_strrchr(PyObject* self, PyObject* args) {
-    Py_UNUSED(self);  // 'self' kullanılmıyor
+    Py_UNUSED(self);  // 'self' parametresi kullanılmıyor
 
     const char *str;
     int c;
@@ -163,7 +163,7 @@ static PyObject* py_strrchr(PyObject* self, PyObject* args) {
 
 // `atoi` function
 static PyObject* py_atoi(PyObject* self, PyObject* args) {
-    Py_UNUSED(self);  // 'self' kullanılmıyor
+    Py_UNUSED(self);  // 'self' parametresi kullanılmıyor
 
     const char *str;
 
@@ -177,7 +177,7 @@ static PyObject* py_atoi(PyObject* self, PyObject* args) {
 
 // `abs` function
 static PyObject* py_abs(PyObject* self, PyObject* args) {
-    Py_UNUSED(self);  // 'self' kullanılmıyor
+    Py_UNUSED(self);  // 'self' parametresi kullanılmıyor
 
     int value;
 
@@ -199,7 +199,7 @@ static int gcd(int a, int b) {
 }
 
 static PyObject* py_gcd(PyObject* self, PyObject* args) {
-    Py_UNUSED(self);  // 'self' kullanılmıyor
+    Py_UNUSED(self);  // 'self' parametresi kullanılmıyor
 
     int a, b;
 
@@ -213,7 +213,7 @@ static PyObject* py_gcd(PyObject* self, PyObject* args) {
 
 // MessageBoxA kullanımı
 static PyObject* py_message_box(PyObject* self, PyObject* args) {
-    Py_UNUSED(self);  // 'self' kullanılmıyor
+    Py_UNUSED(self);  // 'self' parametresi kullanılmıyor
 
     const char *message;
     const char *title;
