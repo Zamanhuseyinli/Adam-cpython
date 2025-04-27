@@ -27,23 +27,7 @@ if platform.system() == 'Windows':
         'src/Win32/memreplication_cutline.cpp',
         'src/Win32/math.cpp'
     ]
-    include_dirs = [
-        # Windows ortamında Visual Studio için genel include dizinleri
-        'C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/VC/Tools/MSVC/17.13.35825.156/include',
-        'C:C:/hostedtoolcache/windows/python/3.13.3/x64/include',  # Python dizini
-    ]
-    library_dirs = [
-        # Visual Studio'nun varsayılan kitaplık dizini
-        'C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/VC/Tools/MSVC/17.13.35825.156/lib',
-    ]
-else:
-    include_dirs = [
-        '/usr/local/include',
-        '/usr/include/python3.x',  # Python dizini
-    ]
-    library_dirs = [
-        '/usr/local/lib',  # Linux için uygun lib dizinleri
-    ]
+  
 
 # Extension'lar (C uzantıları)
 extensions = [
