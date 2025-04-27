@@ -10,27 +10,27 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest  # Windows ortamı
+    runs-on: windows-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2  # Repo'yu çekiyoruz
+        uses: actions/checkout@v4  # v4 kullan
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5  # v5 kullan
         with:
-          python-version: '3.x'  # Python sürümünü belirliyoruz
+          python-version: '3.x'
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip  # Pip güncellemesi
-          pip install setuptools wheel  # Gereksinim duyulan paketlerin kurulumu
+          python -m pip install --upgrade pip
+          pip install setuptools wheel
 
       - name: Build Wheel
-        run: python setup.py bdist_wheel  # Wheel dosyasını oluşturuyoruz
+        run: python setup.py bdist_wheel
 
       - name: Upload wheel artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4  # v4 kullan
         with:
           name: python-wheel
-          path: dist/*.whl  # Oluşan wheel dosyasını yüklüyoruz
+          path: dist/*.whl
