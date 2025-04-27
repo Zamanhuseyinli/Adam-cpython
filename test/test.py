@@ -1,5 +1,8 @@
 from adamlibrary import adam
 from adamlibrary import datasetname
+from adamlibrary import stringer
+from adamlibrary import memreplication_cutline
+from adamlibrary import math
 import ctypes
 
 # calloc test
@@ -155,6 +158,39 @@ def test_abs():
 def test_gcd():
     result = datasetname.gcd(56, 98)
     print(f"GCD result: {result}")  # Should print 14
+    
+# Test stringer module functions
+print("Testing stringer module:")
+print(stringer.strdup("Hello, world!"))
+print(stringer.strncat("Hello, ", "world!", 6))
+print(stringer.strncmp("Hello", "Hello", 5))
+print(stringer.strstr("Hello, world!", "world"))
+print(stringer.strtok("apple,orange,banana", ","))
+print(stringer.strlen("Hello, world!"))
+
+# Test memreplication module functions
+print("\nTesting memreplication module:")
+memory = "Hello, world!"
+print(memreplication.memchr(memory, 119, len(memory)))  # Find byte 'w'
+print(memreplication.memset_s(memory, len(memory), 120))  # Set memory to 'x'
+print(memreplication.malloc_usable_size(memory))
+print(memreplication.aligned_alloc(16, 1024))  # Aligned memory allocation
+print(memreplication.valloc(1024))  # Page-aligned memory allocation
+print(memreplication.posix_memalign(16, 1024))  # POSIX memory alignment
+
+# Test math module functions
+print("\nTesting math module:")
+print(math.pow(2, 3))  # 2 raised to the power of 3
+print(math.sqrt(16))  # Square root of 16
+print(math.exp(1))  # e^1
+print(math.log(10))  # Natural log of 10
+print(math.sin(3.14159 / 2))  # Sine of pi/2
+print(math.cos(3.14159))  # Cosine of pi
+print(math.tan(3.14159 / 4))  # Tangent of pi/4
+print(math.ceil(4.3))  # Round up
+print(math.floor(4.7))  # Round down
+print(math.mod(10, 3))  # 10 mod 3
+   
 
 if __name__ == "__main__":
     test_memset()
