@@ -1,6 +1,6 @@
-from setuptools import setup, Extension, find_packages
 import sys
 import platform
+from setuptools import setup, Extension, find_packages
 import os
 
 # README.md dosyasını okuyoruz
@@ -17,11 +17,33 @@ sources = [
     'src/Unix-posix/memreplication_cutline.cpp',
     'src/Unix-posix/math.cpp'
 ]
-include_dirs = [
-    '/usr/local/include',
-    '/usr/include/python3.x',
-]
 
+# GitHub Actions ortamına göre platform tespiti
+if platform.system() == 'Windows':
+    sources = [
+        'src/Win32/adam.cpp',
+        'src/Win32/datasetname.cpp',
+        'src/Win32/stringer.cpp',
+        'src/Win32/memreplication_cutline.cpp',
+        'src/Win32/math.cpp'
+    ]
+    include_dirs = [
+        # Windows ortamında Visual Studio için genel include dizinleri
+        'C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/VC/Tools/MSVC/17.13.35825.156/include',
+        'C:C:/hostedtoolcache/windows/python/3.13.3/x64/include',  # Python dizini
+    ]
+    library_dirs = [
+        # Visual Studio'nun varsayılan kitaplık dizini
+        'C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/VC/Tools/MSVC/17.13.35825.156/lib',
+    ]
+else:
+    include_dirs = [
+        '/usr/local/include',
+        '/usr/include/python3.x',  # Python dizini
+    ]
+    library_dirs = [
+        '/usr/local/lib',  # Linux için uygun lib dizinleri
+    ]
 
 # Extension'lar (C uzantıları)
 extensions = [
@@ -31,6 +53,7 @@ extensions = [
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
         include_dirs=include_dirs,
+        library_dirs=library_dirs,
     ),
     Extension(
         'adamlibrary.datasetname',
@@ -38,6 +61,7 @@ extensions = [
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
         include_dirs=include_dirs,
+        library_dirs=library_dirs,
     ),
     Extension(
         'adamlibrary.stringer',
@@ -45,6 +69,7 @@ extensions = [
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
         include_dirs=include_dirs,
+        library_dirs=library_dirs,
     ),
     Extension(
         'adamlibrary.memreplication_cutline',
@@ -52,6 +77,7 @@ extensions = [
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
         include_dirs=include_dirs,
+        library_dirs=library_dirs,
     ),
     Extension(
         'adamlibrary.math',
@@ -59,6 +85,7 @@ extensions = [
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
         include_dirs=include_dirs,
+        library_dirs=library_dirs,
     ),
 ]
 
