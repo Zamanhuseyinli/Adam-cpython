@@ -19,12 +19,17 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5  # v5 kullan
         with:
-          python-version: '3.x'
+          python-version: '3.13'  # Python 3.13.3'ü belirtiyoruz
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install setuptools wheel
+          pip install setuptools wheel cython  # Cython'ı da kuruyoruz
+
+      - name: Set up Visual Studio Build Tools
+        uses: microsoft/setup-msbuild@v1  # Visual Studio'yu kuruyoruz
+        with:
+          vs-version: 'latest'  # En son versiyonunu kullanıyoruz
 
       - name: Build Wheel
         run: python setup.py bdist_wheel
@@ -33,4 +38,4 @@ jobs:
         uses: actions/upload-artifact@v4  # v4 kullan
         with:
           name: python-wheel
-          path: dist/*.whl
+          path: dist/*.whl  # Derlenen wheel dosyasını yükle
