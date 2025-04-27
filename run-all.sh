@@ -1,8 +1,8 @@
 
-set -e  # Hata olursa scripti durdur
-set -o pipefail  # Pipe içindeki hatayı da yakala
+set -e 
+set -o pipefail  
 
-# Python interpreter listesi
+#
 python_versions=(
 "/opt/python/cp310-cp310/bin/python"
 "/opt/python/cp311-cp311/bin/python"
@@ -14,18 +14,17 @@ python_versions=(
 "/opt/python/cp38-cp38/bin/python"
 )
 
-# Her Python için build işlemi
+
 for python in "${python_versions[@]}"; do
 echo "===> Building with: $python"
 
-# Eksik setuptools veya wheel varsa kur
+
 "$python" -m pip install --upgrade pip setuptools wheel auditwheel
 
-# Build işlemi
 "$python" setup.py sdist bdist_wheel
 done
 
-# Wheel'leri onarma işlemi
+
 mkdir -p wheelhouse/
 
 for whl in dist/*.whl; do
