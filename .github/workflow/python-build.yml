@@ -1,0 +1,36 @@
+name: Build Python Wheel for Windows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest  # Windows ortamı
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # Repo'yu çekiyoruz
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Python sürümünü belirliyoruz
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip  # Pip güncellemesi
+          pip install setuptools wheel  # Gereksinim duyulan paketlerin kurulumu
+
+      - name: Build Wheel
+        run: python setup.py bdist_wheel  # Wheel dosyasını oluşturuyoruz
+
+      - name: Upload wheel artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: python-wheel
+          path: dist/*.whl  # Oluşan wheel dosyasını yüklüyoruz
