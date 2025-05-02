@@ -2,7 +2,8 @@
 
 
 My **Adamlibrary** project, which I developed to bring low-level operations in basic C functions to Python, now you can use low-level C functions directly from Python.
-![Download Statistics](https://raw.githubusercontent.com/Zamanhuseyinli/Adam-cpython/refs/heads/main/Statics/bar_chart_adamlibrary.png)
+![Download Statistics](https://raw.githubusercontent.com/Zamanhuseyinli/Adam-cpython/refs/heads/main/Statics/bar_chart_adamlibrary.png
+![Download Statistics](https://raw.githubusercontent.com/Zamanhuseyinli/Adam-cpython/refs/heads/main/Statics/pie_chart_adamlibrary.png)
 
 ## Windows Support
 - ✅ Low-level memory management and manipulation
