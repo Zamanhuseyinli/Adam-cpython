@@ -25,6 +25,10 @@ Support for DOS-based systems will be available in future versions.
 ```bash
 pip install adamlibrary
 ```
+## Used termux pip
+```bash
+pip install https://raw.githubusercontent.com/Zamanhuseyinli/Adam-cpython/main/android-wheel-img/adamlibrary-1.6.1-cp312-cp312-linux_aarch64.whl
+```
 ## Dependencies
 - GCC
 - ctypes
