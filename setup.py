@@ -3,13 +3,15 @@ import platform
 from setuptools import setup, Extension, find_packages
 import os
 
-# README.md dosyasını okuyoruz
+# README.md içeriğini oku
 with open(os.path.join(os.path.dirname(__file__), 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
-# Derleme ve linkleme argümanları
+# Derleme/linkleme ayarları
 extra_compile_args = ['-O2', '-Wall']
 extra_link_args = []
+
+# Varsayılan kaynaklar (Unix)
 sources = [
     'src/Unix-posix/adam.cpp',
     'src/Unix-posix/datasetname.cpp',
@@ -18,8 +20,20 @@ sources = [
     'src/Unix-posix/math.cpp'
 ]
 
-# GitHub Actions ortamına göre platform tespiti
-if platform.system() == 'Windows':
+# Platform tespiti (Android için)
+system_name = platform.system().lower()
+machine_arch = platform.machine()
+
+if 'android' in system_name or 'android' in platform.platform().lower() or 'ANDROID_ROOT' in os.environ:
+    sources = [
+        'src/Android-ndk-bionic/adam.cpp',
+        'src/Android-ndk-bionic/datasetname.cpp',
+        'src/Android-ndk-bionic/stringer.cpp',
+        'src/Android-ndk-bionic/memreplication_cutline.cpp',
+        'src/Android-ndk-bionic/math.cpp'
+    ]
+
+elif system_name == 'windows':
     sources = [
         'src/Win32/adam.cpp',
         'src/Win32/datasetname.cpp',
@@ -28,41 +42,21 @@ if platform.system() == 'Windows':
         'src/Win32/math.cpp'
     ]
 
-# Extension'lar (C uzantıları)
+# C uzantıları
 extensions = [
-    Extension(
-        'adamlibrary.adam',
-        sources=[sources[0]],
-        extra_compile_args=extra_compile_args,
-        extra_link_args=extra_link_args,
-    ),
-    Extension(
-        'adamlibrary.datasetname',
-        sources=[sources[1]],
-        extra_compile_args=extra_compile_args,
-        extra_link_args=extra_link_args,
-    ),
-    Extension(
-        'adamlibrary.stringer',
-        sources=[sources[2]],
-        extra_compile_args=extra_compile_args,
-        extra_link_args=extra_link_args,
-    ),
-    Extension(
-        'adamlibrary.memreplication_cutline',
-        sources=[sources[3]],
-        extra_compile_args=extra_compile_args,
-        extra_link_args=extra_link_args,
-    ),
-    Extension(
-        'adamlibrary.math',
-        sources=[sources[4]],
-        extra_compile_args=extra_compile_args,
-        extra_link_args=extra_link_args,
-    ),
+    Extension('adamlibrary.adam', sources=[sources[0]],
+              extra_compile_args=extra_compile_args, extra_link_args=extra_link_args),
+    Extension('adamlibrary.datasetname', sources=[sources[1]],
+              extra_compile_args=extra_compile_args, extra_link_args=extra_link_args),
+    Extension('adamlibrary.stringer', sources=[sources[2]],
+              extra_compile_args=extra_compile_args, extra_link_args=extra_link_args),
+    Extension('adamlibrary.memreplication_cutline', sources=[sources[3]],
+              extra_compile_args=extra_compile_args, extra_link_args=extra_link_args),
+    Extension('adamlibrary.math', sources=[sources[4]],
+              extra_compile_args=extra_compile_args, extra_link_args=extra_link_args),
 ]
 
-# Setup fonksiyonu ile kurulumu yapıyoruz
+# Paket kurulumu
 setup(
     name='adamlibrary',
     version='1.6.1',
@@ -74,8 +68,7 @@ setup(
     install_requires=[
         'cython',
         'setuptools',
-        'wheel',
-        'auditwheel',
+        'wheel'
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
